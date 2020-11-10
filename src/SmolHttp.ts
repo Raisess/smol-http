@@ -33,7 +33,11 @@ export default class SmolHttp {
 		for (let route of this.routes) {
 			if (url === route.endpoint) {
 				const reqSearch: IReq = {
-					query: query,
+					query: (idx: string): string | undefined => {
+						for (let tuple of query ? query : []) {
+							if (idx === tuple[0]) return tuple[1];
+						}
+					},
 					param: undefined
 				};
 

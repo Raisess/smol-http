@@ -5,7 +5,7 @@ const server: SmolHttp = new SmolHttp(1939, undefined, true);
 server.route({
 	endpoint: "/",
 	method:   "get",
-	callback: (req: any) => console.log("ping pong!", req.query),
+	callback: (req: any) => console.log("ping pong!", req.query("b")),
 	res: {
 		statusCode: 201,
 		json: {

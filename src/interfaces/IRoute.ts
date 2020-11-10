@@ -1,6 +1,6 @@
 export interface IRoute {
-	method:    string;
 	endpoint:  string;
+	method:    ReqMethod;
 	callback?: Function;
 	res: {
 		statusCode: number;
