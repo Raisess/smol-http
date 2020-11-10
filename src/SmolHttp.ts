@@ -3,6 +3,7 @@ import http, { Server, IncomingMessage, ServerResponse } from "http";
 import debugLog from "./modules/debugLog";
 
 import { IRoute } from "./interfaces/IRoute";
+import { IReq } from "./interfaces/IReq";
 
 export default class SmolHttp {
 	private host:  string  = "127.0.0.1";
@@ -22,7 +23,12 @@ export default class SmolHttp {
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
 		for (let route of this.routes) {
 			if (req.url === route.endpoint) {
-				route.callback ? route.callback() : null;
+				const reqSearch: IReq = {
+					query: [""],
+					param: [""]
+				};
+
+				route.callback ? route.callback(reqSearch) : null;
 
 				if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, route.method.toUpperCase(), `http://${this.host}:${this.port}${req.url}`]);
 
