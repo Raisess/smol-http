@@ -1,6 +1,8 @@
 import http, { Server, IncomingMessage, ServerResponse } from "http";
 
-import debugLog from "./modules/debugLog";
+import debugLog from "./utils/debugLog";
+
+import parseUrlQuery from "./modules/parseUrlQuery";
 
 import { IRoute } from "./interfaces/IRoute";
 import { IReq } from "./interfaces/IReq";
@@ -21,13 +23,17 @@ export default class SmolHttp {
 	}
 
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
-		const url:   string = req.url ? req.url.split("?")[0] : "/";
-		const query: string | undefined = req.url ? req.url.split("?")[1] : undefined;
+		const url: string = req.url ? req.url.split("?")[0] : "/";
+
+		// check if have query data
+		const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
+		// parse query data
+		const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
 	
 		for (let route of this.routes) {
 			if (url === route.endpoint) {
 				const reqSearch: IReq = {
-					query: query ? [["", ""]] : undefined,
+					query: query,
 					param: undefined
 				};
 

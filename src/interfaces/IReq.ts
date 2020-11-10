@@ -1,5 +1,5 @@
 export interface IReq {
-	query: Array<[string, string]> | undefined;
+	query: QueryTupleArray;
 	param: Array<string> | undefined;
 }
 
