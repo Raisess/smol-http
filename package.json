@@ -1,0 +1,26 @@
+{
+  "name": "smol-http",
+  "version": "1.0.0",
+  "description": "A smol http lib.",
+  "main": "./dist/SmolHttp.js",
+  "scripts": {
+		"start": "jest ./dist/__tests__/lib.spec.js",
+		"compile": "tsc -p ./tsconfig.json",
+		"clean": "rm -r ./dist",
+    "test": "jest ./dist/__tests__/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raisess/smol-http.git"
+  },
+  "author": "Raisess",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Raisess/smol-http/issues"
+  },
+  "homepage": "https://github.com/Raisess/smol-http#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.7",
+    "typescript": "^4.0.5"
+  }
+}
