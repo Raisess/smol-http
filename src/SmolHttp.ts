@@ -21,11 +21,14 @@ export default class SmolHttp {
 	}
 
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
+		const url:   string = req.url ? req.url.split("?")[0] : "/";
+		const query: string | undefined = req.url ? req.url.split("?")[1] : undefined;
+	
 		for (let route of this.routes) {
-			if (req.url === route.endpoint) {
+			if (url === route.endpoint) {
 				const reqSearch: IReq = {
-					query: [""],
-					param: [""]
+					query: query ? [["", ""]] : undefined,
+					param: undefined
 				};
 
 				route.callback ? route.callback(reqSearch) : null;
@@ -36,10 +39,12 @@ export default class SmolHttp {
         res.write(JSON.stringify(route.res.json));
 
         res.end();
+
+				return;
 			}
 		}
 		
-		res.end(`Invalid route ${req.url}`);
+		res.end(`Invalid route ${url}`);
 	});
 
 	private start(): void {
