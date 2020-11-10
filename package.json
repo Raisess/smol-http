@@ -4,10 +4,10 @@
   "description": "A smol http lib.",
   "main": "./dist/SmolHttp.js",
   "scripts": {
-		"start": "jest ./dist/__tests__/lib.spec.js",
-		"compile": "tsc -p ./tsconfig.json",
-		"clean": "rm -r ./dist",
-    "test": "jest ./dist/__tests__/"
+    "start": "jest ./dist/__tests__/lib.spec.js",
+    "compile": "tsc -p ./tsconfig.json",
+    "clean": "rm -r ./dist",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/Raisess/smol-http#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
+    "jest": "^26.6.3",
     "typescript": "^4.0.5"
   }
 }
