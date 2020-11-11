@@ -37,7 +37,7 @@ export default class SmolHttp {
 		const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
 	
 		for (let i: number = 0; i < this.routes.length; i++) {
-			if (url === this.routes[i].endpoint) {
+			if (url === this.routes[i].endpoint && req.method === this.routes[i].method.toUpperCase()) {
 				const route: IRoute = this.routes[i];
 
 				getReqBody(req, (body: any) => {
@@ -63,7 +63,7 @@ export default class SmolHttp {
 
 			setTimeout(() => {
 				if (i === this.routes.length - 1) {
-					res.end(`Invalid route ${url}`);
+					res.end(`Invalid route: ${req.method} 404 ${url}`);
 					return;
 				}
 			}, 50);
