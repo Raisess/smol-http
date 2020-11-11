@@ -7,6 +7,8 @@ import parseUrlQuery from "./modules/parseUrlQuery";
 import { IRoute } from "./interfaces/IRoute";
 import { IReq } from "./interfaces/IReq";
 
+export type Req = IReq;
+
 export default class SmolHttp {
 	private host:  string  = "127.0.0.1";
 	private port:  number  = 0;

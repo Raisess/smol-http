@@ -1,4 +1,4 @@
-import SmolHttp from "../SmolHttp";
+import SmolHttp, { Req } from "../SmolHttp";
 
 const server: SmolHttp = new SmolHttp(1939, undefined, true);
 
@@ -18,7 +18,7 @@ server.route({
 server.route({
 	endpoint: "/hi",
 	method:   "GET",
-	res: (req: any) => {
+	res: (req: Req) => {
 		return {
 			statusCode: 200,
 			json: {
