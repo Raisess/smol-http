@@ -3,6 +3,7 @@ import http, { Server, IncomingMessage, ServerResponse } from "http";
 import debugLog from "./utils/debugLog";
 
 import parseUrlQuery from "./modules/parseUrlQuery";
+import getReqQuery from "./modules/getReqQuery";
 import getReqBody from "./modules/getReqBody";
 
 import { IRoute } from "./interfaces/IRoute";
@@ -42,11 +43,7 @@ export default class SmolHttp {
 				getReqBody(req, (body: any) => {
 					// request data
 					const reqSearch: IReq = {
-						query: (idx: string): string | undefined => {
-							for (let tuple of query ? query : []) {
-								if (idx === tuple[0]) return tuple[1];
-							}
-						},
+						query: (idx: string): string | undefined => getReqQuery(idx, query),
 						param: undefined,
 						body:  body
 					};
