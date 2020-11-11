@@ -41,12 +41,10 @@ export default class SmolHttp {
 					param: undefined
 				};
 
-				route.callback ? route.callback(reqSearch) : null;
-
 				if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, route.method.toUpperCase(), `http://${this.host}:${this.port}${req.url}`]);
 
-				res.writeHead(route.res.statusCode, { "Content-Type": "application/json" });
-        res.write(JSON.stringify(route.res.json));
+				res.writeHead(route.res(reqSearch).statusCode, { "Content-Type": "application/json" });
+        res.write(JSON.stringify(route.res(reqSearch).json));
 
         res.end();
 
