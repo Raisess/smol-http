@@ -30,3 +30,16 @@ server.route({
 	}
 });
 
+server.route({
+	endpoint: "/body",
+	method:   "POST",
+	res: (req: Req): Res => {
+		return {
+			statusCode: 200,
+			json: {
+				body: req.body
+			}
+		}
+	}
+});
+

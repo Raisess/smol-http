@@ -29,7 +29,6 @@ export default class SmolHttp {
 
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
 		const url: string = req.url ? req.url.split("?")[0] : "/";
-
 		// check if have query data
 		const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
 		// parse query data
@@ -37,15 +36,18 @@ export default class SmolHttp {
 	
 		for (let route of this.routes) {
 			if (url === route.endpoint) {
+				// request data
 				const reqSearch: IReq = {
 					query: (idx: string): string | undefined => {
 						for (let tuple of query ? query : []) {
 							if (idx === tuple[0]) return tuple[1];
 						}
 					},
-					param: undefined
+					param: undefined,
+					body:  {}
 				};
 
+				// execute response callback
 				const routeRes: IRes = route.res(reqSearch);
 
 				if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, route.method.toUpperCase(), routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
@@ -54,12 +56,12 @@ export default class SmolHttp {
 				res.write(JSON.stringify(routeRes.json));
 
 				res.end();
-
 				return;
 			}
 		}
 		
 		res.end(`Invalid route ${url}`);
+		return;
 	});
 
 	private start(): void {
