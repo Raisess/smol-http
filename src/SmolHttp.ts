@@ -6,8 +6,10 @@ import parseUrlQuery from "./modules/parseUrlQuery";
 
 import { IRoute } from "./interfaces/IRoute";
 import { IReq } from "./interfaces/IReq";
+import { IRes } from "./interfaces/IRes";
 
 export type Req = IReq;
+export type Res = IRes;
 
 export default class SmolHttp {
 	private host:  string  = "127.0.0.1";
@@ -43,7 +45,7 @@ export default class SmolHttp {
 					param: undefined
 				};
 
-				const routeRes: any = route.res(reqSearch);
+				const routeRes: IRes = route.res(reqSearch);
 
 				if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, route.method.toUpperCase(), routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
 

@@ -1,15 +1,13 @@
 import { IReq } from "./IReq";
+import { IRes } from "./IRes";
 
-interface IRes {
-	(req: IReq): {
-		statusCode: number;
-		json:       any;
-	};
+interface IResFunction {
+	(req: IReq): IRes;
 }
 
 export interface IRoute {
 	endpoint:  string;
 	method:    ReqMethod;
-	res:       IRes;
+	res:       IResFunction;
 }
 
