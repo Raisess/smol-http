@@ -37,9 +37,9 @@ export default class SmolHttp {
 		const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
 	
 		for (let i: number = 0; i < this.routes.length; i++) {
-			if (url === this.routes[i].endpoint && req.method === this.routes[i].method.toUpperCase()) {
-				const route: IRoute = this.routes[i];
-
+			const route: IRoute = this.routes[i];
+			
+			if (url === route.endpoint && req.method === route.method.toUpperCase()) {
 				getReqBody(req, (body: any) => {
 					// request data
 					const reqSearch: IReq = {
@@ -51,7 +51,7 @@ export default class SmolHttp {
 					// execute response callback
 					const routeRes: IRes = route.res(reqSearch);
 
-					if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, route.method.toUpperCase(), routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
+					if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
 
 					res.writeHead(routeRes.statusCode, { "Content-Type": "application/json" });
 					res.write(JSON.stringify(routeRes.json));
@@ -59,10 +59,14 @@ export default class SmolHttp {
 					res.end();
 					return;
 				});
+
+				return;
 			}
 
 			setTimeout(() => {
 				if (i === this.routes.length - 1) {
+					if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, 404, `http://${this.host}:${this.port}${req.url}`]);
+					
 					res.end(`Invalid route: ${req.method} 404 ${url}`);
 					return;
 				}
