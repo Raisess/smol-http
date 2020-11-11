@@ -8,8 +8,9 @@ import { IRoute } from "./interfaces/IRoute";
 import { IReq } from "./interfaces/IReq";
 import { IRes } from "./interfaces/IRes";
 
-export type Req = IReq;
-export type Res = IRes;
+export type Route = IRoute;
+export type Req   = IReq;
+export type Res   = IRes;
 
 export default class SmolHttp {
 	private host:  string  = "127.0.0.1";
@@ -50,9 +51,9 @@ export default class SmolHttp {
 				if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, route.method.toUpperCase(), routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
 
 				res.writeHead(routeRes.statusCode, { "Content-Type": "application/json" });
-        res.write(JSON.stringify(routeRes.json));
+				res.write(JSON.stringify(routeRes.json));
 
-        res.end();
+				res.end();
 
 				return;
 			}

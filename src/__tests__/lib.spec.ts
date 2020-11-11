@@ -23,8 +23,8 @@ server.route({
 			statusCode: 200,
 			json: {
 				testing: "json",
-				query: req.query("query"),
-				date: new Date().toLocaleString()
+				query:   req.query("query"),
+				date:    new Date().toLocaleString()
 			}
 		}
 	}
