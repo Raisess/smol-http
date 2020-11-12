@@ -3,7 +3,9 @@ import http, { Server, IncomingMessage, ServerResponse } from "http";
 import debugLog from "./utils/debugLog";
 
 import parseUrlQuery from "./modules/parseUrlQuery";
+import parseUrlParam from "./modules/parseUrlParam";
 import getReqQuery from "./modules/getReqQuery";
+import getReqParam from "./modules/getReqParam";
 import getReqBody from "./modules/getReqBody";
 
 import { IRoute } from "./interfaces/IRoute";
@@ -48,12 +50,13 @@ export default class SmolHttp {
 				const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
 				// parse query data
 				const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
+				const param: ParamTupleArray = needParam ? parseUrlParam(req.url ? req.url : "", route.endpoint) : undefined;
 
 				getReqBody(req, (body: any) => {
 					// request data
 					const reqSearch: IReq = {
-						query: (idx: string): string | undefined => getReqQuery(idx, query),
-						param: (idx: string): string | undefined => needParam ? "" : undefined,
+						query: (idx: string): string | undefined => haveQuery ? getReqQuery(idx, query) : undefined,
+						param: (idx: string): string | undefined => needParam ? getReqParam(idx, param) : undefined,
 						body:  body
 					};
 

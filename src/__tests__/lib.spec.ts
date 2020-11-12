@@ -44,13 +44,15 @@ server.route({
 });
 
 server.route({
-	endpoint: "/param/:username",
+	endpoint: "/param/:username/:id",
 	method:   "GET",
-	res: (): Res => {
+	res: (req: Req): Res => {
 		return {
 			statusCode: 200,
 			json: {
-				test: "test"
+				test: "test",
+				usernameParam: req.param("username"),
+				idParam: req.param("id")
 			}
 		}
 	}
