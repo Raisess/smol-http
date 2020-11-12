@@ -36,8 +36,8 @@ export default class SmolHttp {
 		// parse query data
 		const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
 	
-		for (let i: number = 0; i < this.routes.length; i++) {
-			const route: IRoute = this.routes[i];
+		for (let route_ of this.routes) {
+			const route: IRoute = route_;
 			
 			if (url === route.endpoint && req.method === route.method.toUpperCase()) {
 				getReqBody(req, (body: any) => {
@@ -59,21 +59,15 @@ export default class SmolHttp {
 					res.end();
 					return;
 				});
-
-				return;
 			}
-
-			setTimeout(() => {
-				if (i === this.routes.length - 1) {
-					if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, 404, `http://${this.host}:${this.port}${req.url}`]);
-					
-					res.end(`Invalid route: ${req.method} 404 ${url}`);
-					return;
-				}
-			}, 50);
 		}
-		
-		return;
+
+		setTimeout(() => {
+			if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, 404, `http://${this.host}:${this.port}${req.url}`]);
+					
+			res.end(`Invalid route: ${req.method} 404 ${url}`);
+			return;
+		}, 0.5);
 	});
 
 	private start(): void {
