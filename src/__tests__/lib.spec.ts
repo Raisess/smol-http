@@ -43,3 +43,16 @@ server.route({
 	}
 });
 
+server.route({
+	endpoint: "/param/:username",
+	method:   "GET",
+	res: (): Res => {
+		return {
+			statusCode: 200,
+			json: {
+				test: "test"
+			}
+		}
+	}
+});
+

@@ -30,12 +30,20 @@ export default class SmolHttp {
 	}
 
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
-		const url: string = req.url ? req.url.split("?")[0] : "/";
+		let url: string = req.url ? req.url.split("?")[0] : "/";
 
-		//console.log(Object.entries(this.routes));
+		for (const route of this.routes) {
+			// fix mutable route endpoint
+			let endpoint: string = route.endpoint;
+			// check if need param data
+			const needParam: boolean = route.endpoint.split(":").length > 1 ? true : false;
 
-		for (let route of this.routes) {
-			if (url === route.endpoint && req.method === route.method.toUpperCase()) {
+			if (needParam) {
+				url = `/${url.split("/")[1]}`;
+				endpoint = route.endpoint.split("/:")[0];
+			}
+			
+			if (url === endpoint && req.method === route.method.toUpperCase()) {
 				// check if have query data
 				const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
 				// parse query data
@@ -45,7 +53,7 @@ export default class SmolHttp {
 					// request data
 					const reqSearch: IReq = {
 						query: (idx: string): string | undefined => getReqQuery(idx, query),
-						param: undefined,
+						param: (idx: string): string | undefined => needParam ? "" : undefined,
 						body:  body
 					};
 

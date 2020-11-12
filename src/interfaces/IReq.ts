@@ -2,9 +2,13 @@ interface IQueryGet {
 	(idx: string): string | undefined;
 }
 
+interface IParamGet {
+	(idx: string): string | undefined;
+}
+
 export interface IReq {
 	query: IQueryGet;
-	param: Array<string> | undefined;
+	param: IParamGet;
 	body:  any;
 }
 
