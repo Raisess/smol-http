@@ -59,6 +59,8 @@ export default class SmolHttp {
 					res.end();
 					return;
 				});
+
+				return;
 			}
 		}
 
@@ -68,6 +70,8 @@ export default class SmolHttp {
 			res.end(`Invalid route: ${req.method} 404 ${url}`);
 			return;
 		}, 0.5);
+
+		return;
 	});
 
 	private start(): void {
