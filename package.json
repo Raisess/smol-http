@@ -2,12 +2,11 @@
   "name": "smol-http",
   "version": "2.1.0",
   "description": "A smol http lib.",
-  "main": "./dist/SmolHttp.js",
+  "main": "./src/SmolHttp.ts",
   "scripts": {
     "start": "node ./dist/__tests__/lib.spec.js",
     "compile": "tsc -p ./tsconfig.json",
-    "clean": "rm -r ./dist",
-		"postinstall": "npm run compile"
+    "clean": "rm -r ./dist"
   },
   "repository": {
     "type": "git",
