@@ -31,15 +31,16 @@ export default class SmolHttp {
 
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
 		const url: string = req.url ? req.url.split("?")[0] : "/";
-		// check if have query data
-		const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
-		// parse query data
-		const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
 	
 		for (let route_ of this.routes) {
 			const route: IRoute = route_;
 			
 			if (url === route.endpoint && req.method === route.method.toUpperCase()) {
+				// check if have query data
+				const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
+				// parse query data
+				const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
+
 				getReqBody(req, (body: any) => {
 					// request data
 					const reqSearch: IReq = {
