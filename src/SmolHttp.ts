@@ -31,6 +31,7 @@ export default class SmolHttp {
 		this.start();
 	}
 
+	// server implementation
 	private server: Server = http.createServer((req: IncomingMessage, res: ServerResponse): void => {
 		let url: string = req.url ? req.url.split("?")[0] : "/";
 
@@ -86,12 +87,47 @@ export default class SmolHttp {
 		return;
 	});
 
+	// start server
 	private start(): void {
 		this.server.listen(this.port, this.host, (): void => console.log("running on port:", this.port));
 	}
 
-	public route(route: IRoute): void {
+	// store route
+	private route(route: IRoute): void {
 		this.routes.push(route);
+	}
+
+	// methods
+	public get(endpoint: string, callback: ReqCallback): void {
+		this.route({
+			endpoint: endpoint,
+			method:   "GET",
+			res:      (req: IReq): IRes => callback(req)
+		});
+	}
+
+	public post(endpoint: string, callback: ReqCallback): void {
+		this.route({
+			endpoint: endpoint,
+			method:   "POST",
+			res:      (req: IReq): IRes => callback(req)
+		});
+	}
+	
+	public put(endpoint: string, callback: ReqCallback): void {
+		this.route({
+			endpoint: endpoint,
+			method:   "PUT",
+			res:      (req: IReq): IRes => callback(req)
+		});
+	}
+	
+	public delete(endpoint: string, callback: ReqCallback): void {
+		this.route({
+			endpoint: endpoint,
+			method:   "DELETE",
+			res:      (req: IReq): IRes => callback(req)
+		});
 	}
 }
 

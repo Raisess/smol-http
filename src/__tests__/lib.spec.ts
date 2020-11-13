@@ -2,59 +2,22 @@ import SmolHttp, { Req, Res } from "../SmolHttp";
 
 const server: SmolHttp = new SmolHttp(1939, undefined, true);
 
-server.route({
-	endpoint: "/",
-	method:   "get",
-	res: (): Res => {
-		return {
-			statusCode: 201,
-			json: {
-				ping: "pong!"
-			}
+server.get("/exp", (req: Req): Res => {
+	return {
+		statusCode: 200,
+		json: {
+			query: req.query("test")
 		}
-	}
+	};
 });
 
-server.route({
-	endpoint: "/hi",
-	method:   "GET",
-	res: (req: Req): Res => {
-		return {
-			statusCode: 200,
-			json: {
-				testing: "json",
-				query:   req.query("query"),
-				date:    new Date().toLocaleString()
-			}
+server.post("/test_post", (req: Req): Res => {
+	return {
+		statusCode: 201,
+		json: {
+			log:  "hey is a post request",
+			body: req.body
 		}
-	}
-});
-
-server.route({
-	endpoint: "/body",
-	method:   "POST",
-	res: (req: Req): Res => {
-		return {
-			statusCode: 200,
-			json: {
-				body: req.body
-			}
-		}
-	}
-});
-
-server.route({
-	endpoint: "/param/:username/:id",
-	method:   "GET",
-	res: (req: Req): Res => {
-		return {
-			statusCode: 200,
-			json: {
-				test: "test",
-				usernameParam: req.param("username"),
-				idParam: req.param("id")
-			}
-		}
-	}
+	};
 });
 
