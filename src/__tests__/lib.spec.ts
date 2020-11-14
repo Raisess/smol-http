@@ -1,6 +1,6 @@
 import SmolHttp, { Req, Res } from "../SmolHttp";
 
-const server: SmolHttp = new SmolHttp(1939, undefined, true);
+const server: SmolHttp = new SmolHttp(1939, "*", undefined, true);
 
 server.get("/exp", (req: Req): Res => {
 	return {

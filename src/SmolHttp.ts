@@ -18,14 +18,16 @@ export type Res   = IRes;
 
 export default class SmolHttp {
 	private host:  string  = "127.0.0.1";
-	private port:  number  = 0;
+	private port:  number  = 8080;
+	private acao:  string  = "*";         // Access-Control-Allow-Origin
 	private debug: boolean = false;
 
 	private routes: Array<IRoute> = [];
 
-	constructor(port: number | string = 8080, host?: string, debug?: boolean) {
-		this.port  = typeof port == "string" ? parseInt(port) : port;
-		this.host  = host ? host : this.host;
+	constructor(port?: number, acao?: string, host?: string, debug?: boolean) {
+		this.port  = port  ? port  : this.port;
+		this.host  = host  ? host  : this.host;
+		this.acao  = acao  ? acao  : this.host;
 		this.debug = debug ? debug : this.debug;
 
 		this.start();
@@ -49,6 +51,7 @@ export default class SmolHttp {
 			if (url === endpoint && req.method === route.method.toUpperCase()) {
 				// check if have query data
 				const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
+
 				// parse query data
 				const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
 				const param: ParamTupleArray = needParam ? parseUrlParam(req.url ? req.url : "", route.endpoint) : undefined;
@@ -64,10 +67,21 @@ export default class SmolHttp {
 					// execute response callback
 					const routeRes: IRes = route.res(reqSearch);
 
-					if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
+					// set request headers
+					res.writeHead(routeRes.statusCode, {
+						"Content-Type":                "application/json",
+						"Access-Control-Allow-Origin": this.acao,
+						"Vary":                        "Origin"
+					});
 
-					res.writeHead(routeRes.statusCode, { "Content-Type": "application/json" });
-					res.write(JSON.stringify(routeRes.json));
+					if (this.acao === "*" || this.acao === req.headers.host) {
+						if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
+						
+						// write json response
+						res.write(JSON.stringify(routeRes.json));
+					} else {
+						req.connection.destroy();
+					}
 
 					res.end();
 					return;
