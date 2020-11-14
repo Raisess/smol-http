@@ -1,12 +1,12 @@
 import http, { Server, IncomingMessage, ServerResponse } from "http";
 
-import debugLog from "./utils/debugLog";
-
 import parseUrlQuery from "./modules/parseUrlQuery";
 import parseUrlParam from "./modules/parseUrlParam";
 import getReqQuery from "./modules/getReqQuery";
 import getReqParam from "./modules/getReqParam";
 import getReqBody from "./modules/getReqBody";
+
+import debugLog from "./utils/debugLog";
 
 import { IRoute } from "./interfaces/IRoute";
 import { IReq } from "./interfaces/IReq";
@@ -67,7 +67,7 @@ export default class SmolHttp {
 					// execute response callback
 					const routeRes: IRes = route.res(reqSearch);
 
-					// set request headers
+					// set response headers
 					res.writeHead(routeRes.statusCode, {
 						"Content-Type":                "application/json",
 						"Access-Control-Allow-Origin": this.acao,

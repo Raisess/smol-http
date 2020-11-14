@@ -1,6 +1,6 @@
 {
   "name": "smol-http",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A smol http lib.",
   "main": "./src/SmolHttp.ts",
   "scripts": {
