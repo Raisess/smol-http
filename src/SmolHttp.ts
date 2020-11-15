@@ -40,6 +40,7 @@ export default class SmolHttp {
 		for (const route of this.routes) {
 			// fix mutable route endpoint
 			let endpoint: string = route.endpoint;
+
 			// check if need param data
 			const needParam: boolean = route.endpoint.split(":").length > 1 ? true : false;
 
@@ -53,14 +54,24 @@ export default class SmolHttp {
 				const haveQuery: boolean = req.url?.split("?")[1] ? true : false;
 
 				// parse query data
-				const query: QueryTupleArray = haveQuery ? parseUrlQuery(req.url ? req.url.split("?")[1] : "") : undefined;
-				const param: ParamTupleArray = needParam ? parseUrlParam(req.url ? req.url : "", route.endpoint) : undefined;
+				const query: QueryTupleArray = haveQuery
+					? parseUrlQuery(req.url ? req.url.split("?")[1] : "")
+					: undefined;
+
+				// parse param data
+				const param: ParamTupleArray = needParam
+					? parseUrlParam(req.url ? req.url : "", route.endpoint)
+					: undefined;
 
 				getReqBody(req, (body: any) => {
 					// request data
 					const reqSearch: IReq = {
-						query: (idx: string): string | undefined => haveQuery ? getReqQuery(idx, query) : undefined,
-						param: (idx: string): string | undefined => needParam ? getReqParam(idx, param) : undefined,
+						query: (idx: string): string | undefined => haveQuery
+							? getReqQuery(idx, query)
+							: undefined,
+						param: (idx: string): string | undefined => needParam
+							? getReqParam(idx, param)
+							: undefined,
 						body:  body
 					};
 
@@ -75,8 +86,13 @@ export default class SmolHttp {
 					});
 
 					if (this.acao === "*" || this.acao === req.headers.host) {
-						if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, routeRes.statusCode, `http://${this.host}:${this.port}${req.url}`]);
-						
+						if (this.debug) {
+							debugLog([`REQUEST [${new Date().toLocaleString()}]:`,
+											 req.method,
+											 routeRes.statusCode,
+											 `http://${this.host}:${this.port}${req.url}`]);
+						}
+
 						// write json response
 						res.write(JSON.stringify(routeRes.json));
 					} else {
@@ -92,7 +108,12 @@ export default class SmolHttp {
 		}
 
 		setTimeout(() => {
-			if (this.debug) debugLog([`REQUEST [${new Date().toLocaleString()}]:`, req.method, 404, `http://${this.host}:${this.port}${req.url}`]);
+			if (this.debug) {
+				debugLog([`REQUEST [${new Date().toLocaleString()}]:`,
+								 req.method,
+								 404,
+								 `http://${this.host}:${this.port}${req.url}`]);
+			}
 					
 			res.end(`Invalid route: ${req.method} 404 ${url}`);
 			return;
